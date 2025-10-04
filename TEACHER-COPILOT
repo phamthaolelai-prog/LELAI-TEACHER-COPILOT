@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mrs Thao – Copilot | Trường Tiểu học Lê Lai – Thành phố Đà Nẵng</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      margin: 0;
+      background: linear-gradient(to bottom right, #f5fffa, #e6f4ff);
+      color: #222;
+    }
+    header {
+      background: linear-gradient(90deg, #0077ff, #ffeb3b);
+      color: #fff;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    header img {
+      width: 60px;
+      border-radius: 12px;
+      border: 2px solid white;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 20px auto;
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #0066cc;
+      border-bottom: 2px solid #ffcc00;
+      display: inline-block;
+      padding-bottom: 4px;
+    }
+    button {
+      background: #0077ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #005dc0;
+    }
+    .output {
+      background: #f9f9f9;
+      border: 1px dashed #ccc;
+      padding: 10px;
+      border-radius: 10px;
+      margin-top: 10px;
+      white-space: pre-wrap;
+    }
+    textarea, input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    footer {
+      text-align: center;
+      font-size: 13px;
+      margin-top: 30px;
+      padding: 15px;
+      color: #555;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/1/1f/Primary_school_icon.svg" alt="logo">
+    <div>
+      <h1>Mrs Thao – Copilot</h1>
+      <div>Trường Tiểu học Lê Lai – Thành phố Đà Nẵng</div>
+    </div>
+  </header>
+
+  <div class="container">
+    <h2>🧩 Tạo phiếu học tập / Bài kiểm tra</h2>
+    <label>Chọn Unit:</label>
+    <select id="unitSelect">
+      <option value="unit1">Unit 1 - My Friends</option>
+      <option value="unit2">Unit 2 - My School</option>
+    </select>
+    <button onclick="generateQuiz()">Tạo bài Quiz</button>
+    <div id="quizOutput" class="output"></div>
+
+    <h2>🎯 Gợi ý hoạt động & trò chơi</h2>
+    <button onclick="generateActivity()">Gợi ý hoạt động</button>
+    <div id="activityOutput" class="output"></div>
+
+    <h2>💬 Nhận xét - Phản hồi học sinh</h2>
+    <label>Tên học sinh:</label>
+    <input id="studentName" placeholder="Ví dụ: Nguyễn Minh Anh">
+    <label>Điểm số:</label>
+    <input id="studentScore" type="number" placeholder="Ví dụ: 8">
+    <button onclick="generateFeedback()">Sinh nhận xét</button>
+    <div id="feedbackOutput" class="output"></div>
+  </div>
+
+  <footer>
+    🌸 Mrs Thao – Copilot | Trường Tiểu học Lê Lai – Thành phố Đà Nẵng 🌸  
+    <br>© 2025 – Designed to support creative English teaching.
+  </footer>
+
+  <script>
+    const questionBank = {
+      unit1: [
+        { q: "Hello. I’m Mai. I’m from _________.", a: "Vietnam" },
+        { q: "We have many _______ in Da Nang.", a: "friends" },
+        { q: "I have English ______ Tuesday.", a: "on" },
+        { q: "Choose the odd one out: Malaysia, America, Japan, Vietnamese.", a: "Vietnamese" },
+        { q: "Where is Akiko from? – She’s from ___________.", a: "Japan" }
+      ],
+      unit2: [
+        { q: "This is my _________.", a: "classroom" },
+        { q: "Where’s your school?", a: "It’s in Hai Chau District." },
+        { q: "What do you have on Monday?", a: "I have Maths and English." },
+        { q: "How many students are there in your class?", a: "Thirty-five." },
+        { q: "Find the odd one out: pencil, eraser, school, ruler.", a: "school" }
+      ]
+    };
+
+    const activities = {
+      unit1: [
+        "👋 Warm-up: ‘Name chain’ – mỗi học sinh nói tên và quốc gia.",
+        "🎲 Game: ‘Flag race’ – chạy đến cờ quốc gia được gọi.",
+        "🎤 Speaking: ‘Introduce your friend’ – nói 2 câu giới thiệu bạn.",
+        "🖍️ Worksheet: điền từ country/nationality còn thiếu.",
+        "🎶 Song: ‘Hello song’ – hát chào bạn bè bằng tiếng Anh."
+      ],
+      unit2: [
+        "📚 Warm-up: ‘School Bingo’ – tìm đồ vật trong lớp học.",
+        "🎲 Game: ‘What’s missing?’ – giấu đồ dùng học tập, đoán tên.",
+        "🗣️ Pair work: ‘Ask and answer about your school.’",
+        "✏️ Worksheet: nối từ với tranh về lớp học.",
+        "🏫 Project: vẽ sơ đồ lớp học và mô tả bằng tiếng Anh."
+      ]
+    };
+
+    function generateQuiz() {
+      const unit = document.getElementById('unitSelect').value;
+      const list = questionBank[unit];
+      let out = `📘 ${unit === 'unit1' ? 'Unit 1 - My Friends' : 'Unit 2 - My School'}\n\n`;
+      list.forEach((item, i) => {
+        out += `${i + 1}. ${item.q}\n(Đáp án: ${item.a})\n\n`;
+      });
+      document.getElementById('quizOutput').textContent = out;
+    }
+
+    function generateActivity() {
+      const unit = document.getElementById('unitSelect').value;
+      const acts = activities[unit];
+      let out = `🎯 Hoạt động đề xuất cho ${unit === 'unit1' ? 'Unit 1 - My Friends' : 'Unit 2 - My School'}:\n\n`;
+      acts.forEach((a, i) => {
+        out += `${i + 1}. ${a}\n`;
+      });
+      document.getElementById('activityOutput').textContent = out;
+    }
+
+    function generateFeedback() {
+      const name = document.getElementById('studentName').value || "Student";
+      const score = parseInt(document.getElementById('studentScore').value) || 0;
+      let feedback = `Nhận xét cho ${name} (Điểm: ${score}/10)\n\n`;
+
+      if (score >= 9) {
+        feedback += "🌟 Excellent! You use English naturally and confidently.\n";
+        feedback += "Tuyệt vời! Con sử dụng tiếng Anh tự nhiên và tự tin.\n";
+      } else if (score >= 7) {
+        feedback += "👍 Good job! Keep improving your pronunciation.\n";
+        feedback += "Làm tốt! Cần luyện phát âm rõ hơn nữa nhé.\n";
+      } else if (score >= 5) {
+        feedback += "🙂 Fair. Try to review the new words again.\n";
+        feedback += "Cố gắng hơn nhé! Ôn lại từ vựng để nhớ lâu hơn.\n";
+      } else {
+        feedback += "💪 Don’t give up! Practice 5 minutes every day.\n";
+        feedback += "Đừng nản nhé! Hãy luyện tập thêm 5 phút mỗi ngày.\n";
+      }
+
+      document.getElementById('feedbackOutput').textContent = feedback;
+    }
+  </script>
+</body>
+</html>
